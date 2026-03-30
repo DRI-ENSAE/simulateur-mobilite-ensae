@@ -3,16 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <title>Simulateur Mobilité ENSAE</title>
+    <link rel="stylesheet" href="style.css">
+</head>
 
-    <!-- Feuille de style ENSAE -->
-    <link rel="stylesheet"dy>
+<body>
 
-    <!-- Bandeau ENSAE -->
     <header class="banner">
         <h1>Simulateur d’éligibilité – Mobilité Internationale ENSAE Paris</h1>
     </header>
 
-    <!-- Écran d'accueil -->
     <section id="screen-accueil" class="screen active">
         <div class="card">
             <h2>Bienvenue</h2>
@@ -25,8 +24,7 @@
         </div>
     </section>
 
-
-    <!-- ================= QUESTIONS ================= -->
+    <!-- =================== QUESTIONS =================== -->
 
     <section id="q1" class="screen">
         <h2>Pendant quelle année académique votre mobilité internationale se déroulera-t-elle ?</h2>
@@ -67,9 +65,7 @@
     </section>
 
     <section id="q4" class="screen">
-        <h2>Êtes-vous en situation de handicap ou d’affection de longue durée (ALD) ?<br>
-            <span class="small">(Justificatif requis)</span>
-        </h2>
+        <h2>Êtes-vous en situation de handicap ou d’affection de longue durée (ALD) ?</h2>
         <select id="handicap">
             <option value="">-- Sélectionnez --</option>
             <option>Oui</option>
@@ -156,15 +152,17 @@
         <button class="btn" onclick="computeResults()">Afficher les aides</button>
     </section>
 
-    <!-- ================= Résultats ================= -->
+
+    <!-- =================== RÉSULTATS =================== -->
+
     <section id="results" class="screen">
         <h2>Résultats</h2>
         <div id="result-content"></div>
         <button class="btn" onclick="goTo('screen-accueil')">Recommencer</button>
     </section>
 
-    <!-- Script principal -->
-    <cript.js</script>
+    <!-- Script -->
+    <script src="script.js"></script>
 
 </body>
 </html>
