@@ -3,8 +3,11 @@
 <head>
     <meta charset="UTF-8" />
     <title>Simulateur Mobilité ENSAE</title>
-    <link rel="stylesheet" href="style.css" />
+
+    <!-- Lien vers ton fichier de style -->
+    <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
     <!-- Bandeau ENSAE -->
@@ -67,7 +70,9 @@
     </section>
 
     <section id="q4" class="screen">
-        <h2>Êtes-vous en situation de handicap ou d’affection de longue durée (ALD) ?<br><span class="small">(Justificatif requis)</span></h2>
+        <h2>Êtes-vous en situation de handicap ou d’affection de longue durée (ALD) ?<br>
+            <span class="small">(Justificatif requis)</span>
+        </h2>
         <select id="handicap">
             <option value="">-- Sélectionnez --</option>
             <option>Oui</option>
@@ -154,6 +159,7 @@
         <button class="btn" onclick="computeResults()">Afficher les aides</button>
     </section>
 
+
     <!-- =================== RÉSULTATS =================== -->
 
     <section id="results" class="screen">
@@ -163,6 +169,9 @@
         <button class="btn" onclick="goTo('screen-accueil')">Recommencer</button>
     </section>
 
+
+    <!-- INCLUSION DU SCRIPT -->
     <script src="script.js"></script>
+
 </body>
 </html>
