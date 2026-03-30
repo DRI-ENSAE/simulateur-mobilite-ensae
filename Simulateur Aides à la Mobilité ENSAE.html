@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"/>
+<title>Simulateur Aides Mobilité ENSAE</title>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        max-width: 950px;
+        margin: auto;
+        padding: 20px;
+        background: #FAFAFA;
+        color: #1A1A1A;
+        line-height: 1.55;
+    }
+    h1, h2, h3 {
+        color: #B91E2B;
+        font-weight: 700;
+    }
+    .question {
+        display: none;
+        margin-top: 25px;
+        padding: 18px 20px;
+        background: #F5F5F5;
+        border-left: 5px solid #B91E2B;
+        border-radius: 6px;
+    }
+    select {
+        width: 100%;
+        padding: 10px;
+        margin-top: 12px;
+        border-radius: 4px;
+        font-size: 15px;
+        border: 1px solid #CCC;
+    }
+    button {
+        padding: 12px 28px;
+        background: #B91E2B;
+        color: #FFF;
+        border: none;
+        border-radius: 5px;
+        font-size: 17px;
+        cursor: pointer;
+        margin-top: 25px;
+    }
+    button:hover {
+        background: #002A52;
+    }
+    .result-block {
+        margin-top: 28px;
+        padding: 20px;
+        background: #F5F5F5;
+        border-radius: 6px;
+        border-left: 5px solid #B91E2B;
+    }
+    .aid-title {
+        font-size: 19px;
+        font-weight: bold;
+        margin-bottom: 10px;
+        color: #B91E2B;
+    }
+    ul { margin: 0 0 0 18px; padding: 0; }
+    .topbar {
+        background: #B91E2B;
+        color: #FFFFFF;
+        padding: 10px 20px;
+        margin: -20px -20px 20px -20px;
+        font-weight: 600;
+        font-size: 16px;
+    }
+    .intro {
+        margin-top: 15px;
+        padding: 20px;
+        background: #F5F5F5;
+        border-radius: 6px;
+        border-left: 5px solid #B91E2B;
+    }
+    .intro p { margin-top: 10px; }
+</style>
+</head>
+
+<body>
+
+<div class="topbar">Simulateur d’aides à la mobilité internationale – ENSAE Paris</div>
+
+<div id="intro" class="intro">
+  <h1>Simulateur d’aides à la mobilité internationale</h1>
+  <p>
+  Ce simulateur vous aide à identifier les aides et bourses auxquelles vous pouvez prétendre en fonction de votre projet de mobilité 
+  (échange, stage, scolarité extérieure, césure).  
+  Les résultats du simulateur sont indicatifs et ne valent pas décision d’attribution.  
+  Les aides et bourses sont seulement des compléments au financement de la mobilité internationale, et n’ont pas vocation à couvrir l’ensemble des frais liés à la mobilité.
+  </p>
+  <button onclick="startSimulation()">Commencer la simulation</button>
+</div>
+
+
+<!-- ========================= Q1 → Q10 ========================= -->
+
+<div id="q1" class="question">
+    <h3>Pendant quelle année académique votre mobilité internationale va-t-elle se dérouler ?</h3>
+    <select id="annee" onchange="next('q1','q2')">
+        <option value="">-- Sélectionnez --</option>
+        <option>1A</option>
+        <option>2A</option>
+        <option>Césure</option>
+        <option>3A</option>
+    </select>
+</div>
+
+<div id="q2" class="question">
+    <h3>Bénéficiez-vous d'une bourse sur critère social ?</h3>
+    <select id="boursier" onchange="q2Logic()">
+        <option value="">-- Sélectionnez --</option>
+        <option>Oui</option>
+        <option>Non</option>
+    </select>
+</div>
+
+<div id="q3" class="question">
+    <h3>Si oui, précisez votre échelon de bourse</h3>
+    <select id="echelon" onchange="next('q3','q4')">
+        <option value="">-- Sélectionnez --</option>
+        <option>0bis</option>
+        <option>1</option>
+        <option>2</option>
+        <option>3</option>
+        <option>4</option>
+        <option>5</option>
+        <option>6</option>
+        <option>7</option>
+    </select>
+</div>
+
+<div id="q4" class="question">
+    <h3>Êtes-vous en situation de handicap ou d’affection de longue durée (ALD) ?</h3>
+    <select id="handicap" onchange="next('q4','q5')">
+        <option value="">-- Sélectionnez --</option>
+        <option>Oui</option>
+        <option>Non</option>
+    </select>
+</div>
+
+<div id="q5" class="question">
+    <h3>Quel type de mobilité envisagez-vous de réaliser ?</h3>
+    <select id="mobilite" onchange="q5Logic()">
+        <option value="">-- Sélectionnez --</option>
+        <option>Stage d'ouverture ENSAE</option>
+        <option>Stage d'application ENSAE</option>
+        <option>Stage de fin d'études ENSAE</option>
+        <option>Stage de fin d'études Master IP Paris & ENSAE</option>
+        <option>Stage de césure</option>
+        <option>Échange académique 3A</option>
+        <option>Échange académique césure</option>
+        <option>Scolarité extérieure diplômante (Scolex)</option>
+    </select>
+</div>
+
+<div id="q6" class="question">
+    <h3>Lieu de la mobilité</h3>
+    <select id="destination" onchange="q6Logic()">
+        <option value="">-- Sélectionnez --</option>
+        <option>Union Européenne</option>
+        <option>Royaume-Uni</option>
+        <option>Suisse</option>
+        <option>États-Unis</option>
+        <option>Canada</option>
+        <option>Amérique Latine</option>
+        <option>Asie</option>
+        <option>Afrique</option>
+        <option>Océanie</option>
+    </select>
+</div>
+
+<div id="q7" class="question">
+    <h3>Votre mobilité se déroule-t-elle en Allemagne ?</h3>
+    <select id="allemagne" onchange="q7Logic()">
+        <option value="">-- Sélectionnez --</option>
+        <option>Oui</option>
+        <option>Non</option>
+    </select>
+</div>
+
+<div id="q8" class="question">
+    <h3>Votre mobilité se déroule-t-elle en Bavière ?</h3>
+    <select id="baviere" onchange="q8Logic()">
+        <option value="">-- Sélectionnez --</option>
+        <option>Oui</option>
+        <option>Non</option>
+    </select>
+</div>
+
+<div id="q9" class="question">
+    <h3>Votre stage est-il rémunéré ?</h3>
+    <select id="remuneration" onchange="next('q9','q10')">
+        <option value="">-- Sélectionnez --</option>
+        <option>Non rémunéré</option>
+        <option>< 500€ /mois</option>
+        <option>500€ à 1200€ /mois</option>
+        <option>> 1200€ /mois</option>
+    </select>
+</div>
+
+<div id="q10" class="question">
+    <h3>Durée totale de la mobilité</h3>
+    <select id="duree" onchange="showButton()">
+        <option value="">-- Sélectionnez --</option>
+        <option>< 2 mois</option>
+        <option>2 - 3 mois</option>
+        <option>3 - 6 mois</option>
+        <option>6 - 9 mois</option>
+        <option>> 9 mois</option>
+    </select>
+</div>
+
+<button id="btn-results" style="display:none;" onclick="compute()">Afficher les aides</button>
+
+<div id="resultats"></div>
+
+<button id="btn-reset" style="margin-top:10px; display:none;" onclick="resetSimulation()">Recommencer la simulation</button>
+
+
+<!-- ========================= LOGIQUE JS ========================= -->
+
+<script>
+
+function startSimulation(){
+    document.getElementById('intro').style.display = 'none';
+    document.getElementById('q1').style.display = 'block';
+    let btnReset = document.getElementById('btn-reset');
+    if(btnReset) btnReset.style.display = 'inline-block';
+    window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+function resetSimulation(){
+    document.querySelectorAll('select').forEach(s => s.value = '');
+    document.querySelectorAll('.question').forEach(q => q.style.display = 'none');
+    document.getElementById('resultats').innerHTML = '';
+    document.getElementById('btn-results').style.display = 'none';
+    document.getElementById('intro').style.display = 'block';
+    document.getElementById('btn-reset').style.display = 'none';
+    window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+function next(a,b){ document.getElementById(b).style.display="block"; }
+
+function q2Logic(){
+    let b = document.getElementById("boursier").value;
+    if(b === "Oui") document.getElementById("q3").style.display="block";
+    else next("q2","q4");
+}
+
+function isStageMobility(){
+    const m = document.getElementById('mobilite').value;
+    return m && m.includes('Stage');
+}
+
+function resetAfterQ5(){
+    ['q6','q7','q8','q9','q10'].forEach(id => {
+        const el = document.getElementById(id);
+        if(el) el.style.display = 'none';
+    });
+    ['destination','allemagne','baviere','remuneration','duree'].forEach(id => {
+        const s = document.getElementById(id);
+        if(s) s.value = '';
+    });
+}
+
+function q5Logic(){
+    resetAfterQ5();
+    document.getElementById('q6').style.display = 'block';
+}
+
+function q6Logic(){
+    const d = document.getElementById('destination').value;
+    const stage = isStageMobility();
+
+    ['q7','q8','q9','q10'].forEach(id => document.getElementById(id).style.display = 'none');
+
+    if(d === 'Union Européenne'){
+        document.getElementById('q7').style.display = 'block';
+    } else {
+        if(stage) document.getElementById('q9').style.display = 'block';
+        document.getElementById('q10').style.display = 'block';
+    }
+}
+
+function q7Logic(){
+    const a = document.getElementById('allemagne').value;
+    const stage = isStageMobility();
+    document.getElementById('q8').style.display = 'none';
+
+    if(a === 'Oui'){
+        document.getElementById('q8').style.display = 'block';
+    } else {
+        if(stage) document.getElementById('q9').style.display = 'block';
+        document.getElementById('q10').style.display = 'block';
+    }
+}
+
+function q8Logic(){
+    const stage = isStageMobility();
+    if(stage) document.getElementById('q9').style.display = 'block';
+    document.getElementById('q10').style.display = 'block';
+}
+
+function showButton(){
+    document.getElementById("btn-results").style.display = "block";
+}
+
+function compute(){
+
+    let html = `<h2>Aides auxquelles vous êtes potentiellement éligible</h2>`;
+
+    const boursier = document.getElementById("boursier").value;
+    const echelon = document.getElementById("echelon").value;
+    const handicap = document.getElementById("handicap").value;
+    const mob = document.getElementById("mobilite").value;
+    const dest = document.getElementById("destination").value;
+    const alle = document.getElementById("allemagne").value;
+    const bav = document.getElementById("baviere").value;
+    const remun = document.getElementById("remuneration").value;
+    const duree = document.getElementById("duree").value;
+
+    function dureeMinDeuxMois(){
+        return duree && !duree.startsWith('<');
+    }
+    function remunSup1200(){
+        return remun && remun.includes('> 1200');
+    }
+    function block(titre, contenu){
+        html += `<div class="result-block"><div class="aid-title">${titre}</div>${contenu}</div>`;
+    }
+
+    /* ===================================================
+       1 — Erasmus+ ÉTUDES (3A)
+    =================================================== */
+
+    if(mob === "Échange académique 3A" && dest === "Union Européenne" && dureeMinDeuxMois()){
+        block("1. Bourses Erasmus+ échanges 3A", `
+        <p><strong>Éligibilité :</strong></p>
+        <ul>
+            <li>Mobilité académique de 3A dans un établissement partenaire Erasmus+.</li>
+            <li>Durée ≥ 2 mois.</li>
+        </ul>
+        <p><strong>Conditions :</strong></p>
+        <ul>
+            <li>Montant de base ≈ <strong>500 €/mois</strong>.</li>
+            <li><strong>Complément transport</strong> selon distance (285–417€ écoresponsable / 211–309€ classique).</li>
+            <li><strong>Complément inclusion +250€/mois</strong> (handicap/ALD, ZRR, QPV, boursiers échelons 6–7).</li>
+            <li>Versement 80% début / 20% fin.</li>
+        </ul>
+        <p><strong>Candidature :</strong> Appel en avril.</p>
+        `);
+    }
+
+    /* ===================================================
+       2 — Erasmus+ STAGES (UE)
+    =================================================== */
+
+    if(isStageMobility() && dest === "Union Européenne" && dureeMinDeuxMois()){
+        block("2. Bourses Erasmus+ stages — Union Européenne", `
+        <p><strong>Éligibilité :</strong></p>
+        <ul>
+            <li>Stage obligatoire ou stage de césure en Union Européenne.</li>
+            <li>Priorité : stages non rémunérés / peu rémunérés, stages obligatoires, partenaires (StatCan, WFP…), élèves boursiers.</li>
+        </ul>
+        <p><strong>Conditions :</strong></p>
+        <ul>
+            <li>Montant ≈ <strong>500 €/mois</strong>.</li>
+            <li><strong>+150 €/mois</strong> complément stage.</li>
+            <li><strong>Complément transport</strong> selon distance (bonus écoresponsable).</li>
+            <li><strong>Complément inclusion +250 €/mois</strong>.</li>
+            <li>Versement 80% début / 20% fin.</li>
+        </ul>
+        <p><strong>Candidature :</strong><br>
+        Appel principal fin mars / début avril (stages mai–septembre).<br>
+        Appel complémentaire possible en décembre.</p>
+        `);
+    }
+
+    /* ===================================================
+       3 — Erasmus+ STAGES (HORS UE)
+    =================================================== */
+
+    if(isStageMobility() && dest !== "Union Européenne" && dureeMinDeuxMois()){
+        block("3. Bourses Erasmus+ stages — Hors Union Européenne (faible probabilité)", `
+        <p><strong>Éligibilité :</strong></p>
+        <ul>
+            <li>Stage obligatoire ou stage de césure hors UE.</li>
+            <li>Priorité : stages non rémunérés / peu rémunérés, stages obligatoires, structures partenaires, élèves boursiers.</li>
+        </ul>
+        <p><strong>Conditions :</strong></p>
+        <ul>
+            <li>Montant ≈ <strong>500 €/mois</strong>.</li>
+            <li><strong>+150 €/mois</strong> complément stage.</li>
+            <li><strong>Complément transport</strong> selon distance (bonus écoresponsable).</li>
+            <li><strong>Complément inclusion +250 €/mois</strong>.</li>
+        </ul>
+        <p><strong>IMPORTANT :</strong><br>
+        Forte demande, <strong>faible probabilité d’attribution</strong> chaque année.</p>
+        <p><strong>Candidature :</strong> Appel fin mars / début avril.</p>
+        `);
+    }
+
+    /* ===================================================
+       4 — Aide GENES
+    =================================================== */
+
+    if(boursier === "Oui" && dureeMinDeuxMois()){
+        block("4. Aide à la mobilité internationale du Groupe ENSAE‑ENSAI (GENES)", `
+        <p><strong>Éligibilité :</strong></p>
+        <ul>
+            <li>Boursier sur critères sociaux.</li>
+            <li>Mobilité (stage ou études) de 2 à 9 mois.</li>
+            <li>Mobilités académiques prioritaires.</li>
+            <li>Mobilité confirmée au moment de l’appel.</li>
+        </ul>
+        <p><strong>Conditions :</strong></p>
+        <ul>
+            <li>4 bourses/an.</li>
+            <li><strong>400 €/mois</strong>.</li>
+            <li>Cumulable avec les autres bourses.</li>
+        </ul>
+        <p><strong>Candidature :</strong> 1 à 2 appels/an (automne + printemps).</p>
+        `);
+    }
+
+    /* ===================================================
+       5 — Fondation ENSAE‑ENSAI
+    =================================================== */
+
+    if(boursier === "Oui"){
+        block("5. Aide à la mobilité de la Fondation ENSAE‑ENSAI", `
+        <p><strong>Éligibilité :</strong> boursier sur critères sociaux, mobilité d’études ou de stage.</p>
+        <p><strong>Montant :</strong> aide forfaitaire de <strong>1 000 €</strong> (≈ 5 aides/an).</p>
+        <p><strong>Candidature :</strong> attribution directe par la DRI.</p>
+        `);
+    }
+
+    /* ===================================================
+       6 — IP Paris Master
+    =================================================== */
+
+    if(mob === "Stage de fin d'études Master IP Paris & ENSAE" && dest === "Union Européenne" && dureeMinDeuxMois()){
+        block("6. IP Paris – Bourse de stage Erasmus+ Master", `
+        <p><strong>Éligibilité :</strong></p>
+        <ul>
+            <li>Élèves ENSAE inscrits en Master IP Paris.</li>
+            <li>Stage de 2 à 6 mois en UE.</li>
+            <li>Non cumulable avec une bourse Erasmus+ ENSAE.</li>
+            <li>Priorité aux stages non rémunérés.</li>
+        </ul>
+        <p><strong>Candidature :</strong> gérée par IP Paris.</p>
+        `);
+    }
+
+    /* ===================================================
+       7 — Zellidja
+    =================================================== */
+
+    if(
+       (mob === "Scolarité extérieure diplômante (Scolex)" ||
+        mob === "Stage de fin d'études ENSAE" ||
+        mob === "Stage de fin d'études Master IP Paris & ENSAE")
+       && dureeMinDeuxMois()
+    ){
+        block("7. Bourse Jean Walter–Zellidja (Académie Française)", `
+        <p><strong>Pour :</strong></p>
+        <ul>
+            <li>Projet d’études ou de recherche (≥ 2 mois).</li>
+            <li>Moins de 30 ans.</li>
+            <li>Début du projet à partir de juillet.</li>
+            <li>L’ENSAE peut présenter <strong>2 dossiers</strong> par an.</li>
+        </ul>
+        <p><strong>Montant :</strong> <strong>800 à 5 000 €</strong>.</p>
+        <p><strong>Candidature :</strong> novembre → février (via dossier papier DRI).</p>
+        `);
+    }
+
+    /* ===================================================
+       8 — CGE Handicap
+    =================================================== */
+
+    if(handicap === "Oui"){
+        block("8. CGE – Bourse handicap", `
+        <p><strong>Éligibilité :</strong></p>
+        <ul>
+            <li>Élèves en situation de handicap (justificatif obligatoire).</li>
+            <li>Mobilité confirmée et à venir.</li>
+        </ul>
+        <p><strong>Montant :</strong> <strong>150 € à 5 000 €</strong>.</p>
+        <p><strong>Conditions :</strong><br>Surcoûts liés au handicap (transport, matériel, soins…).</p>
+        <p><strong>Candidature :</strong> via la DRI (deadline début mai).</p>
+        `);
+    }
+
+    /* ===================================================
+       9 — OFAJ
+    =================================================== */
+
+    if(isStageMobility() && alle === "Oui" && !remunSup1200()){
+        block("9. OFAJ – Bourse de stage en Allemagne", `
+        <p><strong>Éligibilité :</strong></p>
+        <ul>
+            <li>Stage obligatoire en Allemagne (≥ 1 mois).</li>
+            <li>Non éligible si rémunération + aide > 1200 €/mois.</li>
+        </ul>
+        <p><strong>Montant :</strong></p>
+        <ul>
+            <li><strong>300 €/mois</strong> (max 3 mois).</li>
+            <li>Transport : 0,16 €/km.</li>
+        </ul>
+        <p><strong>Candidature :</strong> via la DRI.</p>
+        `);
+    }
+
+    /* ===================================================
+       10 — BayFrance
+    =================================================== */
+
+    if(bav === "Oui"){
+        block("10. BayFrance – Starter‑Kit Bayern–France", `
+        <p><strong>Éligibilité :</strong></p>
+        <ul>
+            <li>Études ou stage de recherche en Bavière.</li>
+            <li>Stages en entreprise : non éligibles.</li>
+        </ul>
+        <p><strong>Montant :</strong></p>
+        <ul>
+            <li><strong>500 €</strong> + jusqu’à <strong>450 €</strong> de frais de voyage.</li>
+        </ul>
+        <p><strong>Candidature :</strong><br>15 novembre (été) / 15 avril (hiver).</p>
+        `);
+    }
+
+    /* ===================================================
+       11 — GREAT
+    =================================================== */
+
+    if(dest === "Royaume-Uni" && mob === "Scolarité extérieure diplômante (Scolex)"){
+        block("11. Bourses GREAT – Royaume‑Uni", `
+        <p><strong>Éligibilité :</strong></p>
+        <ul>
+            <li>1 an de Master au Royaume-Uni dans une université partenaire.</li>
+        </ul>
+        <p><strong>Montant :</strong> ≥ <strong>£10 000</strong>.</p>
+        <p><strong>Candidature :</strong> directement auprès des universités.</p>
+        `);
+    }
+
+    /* ===================================================
+       12 — Fulbright
+    =================================================== */
+
+    if(dest === "États-Unis" && mob === "Scolarité extérieure diplômante (Scolex)"){
+        block("12. Bourses Fulbright – États-Unis", `
+        <p><strong>Éligibilité :</strong></p>
+        <ul>
+            <li>Master ou PhD aux États-Unis.</li>
+            <li>Nationalité française (pas de double nationalité franco‑américaine).</li>
+        </ul>
+        <p><strong>Montant :</strong></p>
+        <ul>
+            <li><strong>40 000 $</strong>.</li>
+            <li><strong>1200 €</strong> pour le voyage.</li>
+            <li>Visa gratuit + assurance ASPE.</li>
+        </ul>
+        <p><strong>Programme :</strong> extrêmement sélectif (6–8 lauréats).</p>
+        <p><strong>Candidature :</strong> jusqu’au 1er décembre.</p>
+        `);
+    }
+
+    /* ===================================================
+       NON ÉLIGIBLES
+    =================================================== */
+
+    html += `
+    <div class="result-block">
+        <div class="aid-title">III. Aides non éligibles pour les élèves ENSAE</div>
+        <ul>
+            <li><strong>❌ Aide à la mobilité internationale (AMI – MESRI)</strong><br>
+            Réservée aux établissements du Ministère de l’Enseignement supérieur et de la Recherche.</li>
+
+            <li><strong>❌ Bourse Mobilité Île‑de‑France</strong><br>
+            Non accessible aux écoles d’ingénieur.</li>
+        </ul>
+    </div>
+    `;
+
+    /* ===================================================
+       CONTACTS
+    =================================================== */
+
+    html += `
+    <div class="result-block">
+        <div class="aid-title">IV. Contacts & rappels</div>
+        <p><strong>📧 international@ensae.fr</strong></p>
+        <p>Merci d’indiquer l’objet de votre demande et vos dates de mobilité.</p>
+        <p>En cas de candidature à une aide externe (OFAJ, BayFrance, Fulbright, GREAT…), merci d’informer la DRI.</p>
+    </div>
+    `;
+
+    document.getElementById("resultats").innerHTML = html;
+}
+
+</script>
+
+</body>
+</html>
