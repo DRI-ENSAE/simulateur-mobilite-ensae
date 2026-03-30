@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Simulateur Mobilité ENSAE</title>
+
+    <!-- CSS -->
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -24,7 +26,7 @@
         </div>
     </section>
 
-    <!-- =================== QUESTIONS =================== -->
+    <!-- QUESTIONS -->
 
     <section id="q1" class="screen">
         <h2>Pendant quelle année académique votre mobilité internationale se déroulera-t-elle ?</h2>
@@ -65,7 +67,7 @@
     </section>
 
     <section id="q4" class="screen">
-        <h2>Êtes-vous en situation de handicap ou d’affection de longue durée (ALD) ?</h2>
+        <h2>Êtes-vous en situation de handicap ou d’affection longue durée (ALD) ?</h2>
         <select id="handicap">
             <option value="">-- Sélectionnez --</option>
             <option>Oui</option>
@@ -132,9 +134,9 @@
         <select id="remuneration">
             <option value="">-- Sélectionnez --</option>
             <option>Non rémunéré</option>
-            <option>&lt; 500€ /mois</option>
+            <option>< 500€ /mois</option>
             <option>500€ à 1200€ /mois</option>
-            <option>&gt; 1200€ /mois</option>
+            <option>> 1200€ /mois</option>
         </select>
         <button class="btn" onclick="goTo('q10')">Suivant</button>
     </section>
@@ -143,17 +145,14 @@
         <h2>Durée totale de la mobilité</h2>
         <select id="duree">
             <option value="">-- Sélectionnez --</option>
-            <option>&lt; 2 mois</option>
+            <option>< 2 mois</option>
             <option>2 - 3 mois</option>
             <option>3 - 6 mois</option>
             <option>6 - 9 mois</option>
-            <option>&gt; 9 mois</option>
+            <option>> 9 mois</option>
         </select>
         <button class="btn" onclick="computeResults()">Afficher les aides</button>
     </section>
-
-
-    <!-- =================== RÉSULTATS =================== -->
 
     <section id="results" class="screen">
         <h2>Résultats</h2>
@@ -161,7 +160,7 @@
         <button class="btn" onclick="goTo('screen-accueil')">Recommencer</button>
     </section>
 
-    <!-- Script -->
+    <!-- JS -->
     <script src="script.js"></script>
 
 </body>
